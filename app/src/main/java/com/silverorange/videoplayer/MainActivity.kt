@@ -5,8 +5,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -20,8 +24,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +49,7 @@ class MainActivity : ComponentActivity() {
             val viewModel = VideoViewModel()
             val viewState: MainViewState = viewModel.mainViewState.collectAsState().value
             Scaffold(topBar = { TopBar() }) {
-                Column(Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.fillMaxSize()) {
                     VideoPlayerBox(viewState)
                     Column(
                         modifier = Modifier
@@ -71,8 +78,58 @@ fun TopBar() {
 fun VideoPlayerBox(state: MainViewState) {
     val url =
         if (state.videosList.isNotEmpty()) state.videosList.first().fullURL else ""
-    Box(modifier = Modifier.height(250.dp)) {
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .height(250.dp)
+
+    ) {
         VideoPlayer(url)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .background(color = Color.White)) {
+                Image(
+                    painter = painterResource(id = R.drawable.previous),
+                    contentDescription = "previous"
+                )
+            }
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .background(color = Color.White)) {
+                Image(
+                    painter = painterResource(id = R.drawable.pause),
+                    contentDescription = "pause"
+                )
+            }
+            if (false) {
+                Box(modifier = Modifier
+                    .padding(4.dp)
+                    .background(color = Color.White)) {
+                    Box {
+                        Image(
+                            painter = painterResource(id = R.drawable.play),
+                            contentDescription = "play"
+                        )
+                    }
+                }
+            }
+
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .background(color = Color.White)) {
+                Image(
+                    painter = painterResource(id = R.drawable.next),
+                    contentDescription = "next"
+                )
+            }
+        }
+
     }
 }
 
