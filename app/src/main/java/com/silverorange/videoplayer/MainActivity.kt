@@ -9,34 +9,39 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 
 class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContent {
-      TopBar()
-      TextCard()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val viewModel = VideoViewModel()
+            val viewState: MainViewState = viewModel.mainViewState.collectAsState().value
+            TopBar()
+            TextCard(viewState)
+        }
     }
-  }
 }
 
-@Preview
 @Composable
 fun TopBar() {
-  TopAppBar(title = { Text(text = "Video Player") })
+    TopAppBar(title = { Text(text = "Video Player") })
 }
 
-@Preview
 @Composable
-fun TextCard() {
-  Column(
-    modifier = Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Text(text = "Hello world!")
-  }
+fun TextCard(
+    state: MainViewState
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val description =
+            if (state.videosList.isNotEmpty()) state.videosList.first().description else ""
+        Text(text = description)
+    }
 }

@@ -13,8 +13,11 @@ interface IVideoService {
 }
 
 class VideoService : IVideoService {
-    private val mUrl = "http://localhost:4000/"
-
+    private val mUrl = "http://10.0.2.2:4000/"
+    var retrofit: Retrofit
+    init {
+        retrofit = retrofitSetup()
+    }
     override fun retrofitSetup(): Retrofit {
         val gSon = GsonBuilder()
             .setLenient()
